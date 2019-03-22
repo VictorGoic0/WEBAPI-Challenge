@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "The actions information could not be retrieved." });
+      .json({ message: "The actions' information could not be retrieved." });
   }
 });
 
@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
       res.status(200).json(newAction);
     } else {
       res.status(500).json({
-        message: "There was an error while saving the post to the database"
+        message: "There was an error while saving the action to the database"
       });
     }
   } catch (error) {
@@ -82,7 +82,7 @@ router.put("/:id", async (req, res) => {
       res.status(200).json(edited);
     } else {
       res
-        .status(404)
+        .status(500)
         .json({ message: "The post information could not be modified." });
     }
   } catch (error) {
