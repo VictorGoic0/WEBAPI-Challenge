@@ -2,7 +2,7 @@ import React from "react";
 
 const Action = props => {
   return (
-    <div>
+    <div className="action">
       <p>{props.action.description}</p>
       <p>{props.action.notes}</p>
     </div>
