@@ -10,7 +10,9 @@ router.get("/", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "The projects' information could not be retrieved." });
+      .json({
+        message: `The projects' information could not be retrieved: ${error}.`
+      });
   }
 });
 
@@ -28,7 +30,9 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "The project's information could not be retrieved." });
+      .json({
+        message: `The project's information could not be retrieved: ${error}.`
+      });
   }
 });
 
@@ -46,7 +50,7 @@ router.get("/:id/actions", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "The project's information could not be retrieved." });
+      .json({ message: `The project's information could not be retrieved: ${error}.`
   }
 });
 
@@ -58,17 +62,12 @@ router.post("/", async (req, res) => {
     try {
       const newProject = await db.insert(project);
       if (newProject) {
-        res.status(200).json(newProject);
-      } else {
-        res.status(500).json({
-          message:
-            "There was an error while saving the project to the database."
-        });
+        res.status(201).json(newProject);
       }
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Something went wrong when you made your request." });
+      res.status(500).json({
+        message: `There was an error while saving the project to the database: ${error}.`
+      });
     }
   }
 });
@@ -81,8 +80,6 @@ router.delete("/:id", async (req, res) => {
       const deleted = await db.remove(id);
       if (deleted) {
         res.status(200).json(project);
-      } else {
-        res.status(500).json({ message: "The project could not be removed." });
       }
     } else {
       res
@@ -90,9 +87,7 @@ router.delete("/:id", async (req, res) => {
         .json({ message: "The project with the specified ID does not exist." });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Something went wrong when you made your request." });
+    res.status(500).json({ message: `The project could not be removed: ${error}.` });
   }
 });
 
@@ -107,14 +102,14 @@ router.put("/:id", async (req, res) => {
       if (edited) {
         res.status(200).json(edited);
       } else {
-        res
-          .status(500)
-          .json({ message: "The post information could not be modified." });
+        res.status(404).json({
+          message: "The project with the specified ID does not exist."
+        });
       }
     } catch (error) {
       res
         .status(500)
-        .json({ message: "Something went wrong when you made your request." });
+        .json({ message: `The project information could not be modified: ${error}.` });
     }
   }
 });
