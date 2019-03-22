@@ -3,8 +3,8 @@
 // code away!
 const server = require("./server.js");
 
-const port = process.env.PORT || 4000;
-const greeting = process.env.GREETING;
+const port = 5000 || process.env.PORT;
+const greeting = "GREETINGS" || process.env.GREETING;
 
 server.listen(port, () => {
   console.log(`\n*** ${greeting} http://localhost:${port} ***\n`);
