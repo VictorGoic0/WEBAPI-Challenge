@@ -34,19 +34,25 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const action = req.body;
-  try {
-    const newAction = await db.insert(action);
-    if (newAction) {
-      res.status(200).json(newAction);
-    } else {
-      res.status(500).json({
-        message: "There was an error while saving the action to the database"
-      });
+  if (!action.project_id || action.description || action.ntoes) {
+    res.status(400).json({
+      message: "Please provide a project ID, notes and a description."
+    });
+  } else {
+    try {
+      const newAction = await db.insert(action);
+      if (newAction) {
+        res.status(200).json(newAction);
+      } else {
+        res.status(500).json({
+          message: "There was an error while saving the action to the database."
+        });
+      }
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong when you made your request." });
     }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Something went wrong when you made your request" });
   }
 });
 
@@ -59,7 +65,7 @@ router.delete("/:id", async (req, res) => {
       if (deleted) {
         res.status(200).json(action);
       } else {
-        res.status(500).json({ message: "The action could not be removed" });
+        res.status(500).json({ message: "The action could not be removed." });
       }
     } else {
       res
@@ -76,19 +82,27 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const action = req.body;
-  try {
-    const edited = await db.update(id, action);
-    if (edited) {
-      res.status(200).json(edited);
-    } else {
+  if (!action.project_id || action.description || action.notes) {
+    res
+      .status(400)
+      .json({
+        message: "Please provide a project ID, notes and a description."
+      });
+  } else {
+    try {
+      const edited = await db.update(id, action);
+      if (edited) {
+        res.status(200).json(edited);
+      } else {
+        res
+          .status(500)
+          .json({ message: "The post information could not be modified." });
+      }
+    } catch (error) {
       res
         .status(500)
-        .json({ message: "The post information could not be modified." });
+        .json({ message: "Something went wrong when you made your request." });
     }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Something went wrong when you made your request." });
   }
 });
 
