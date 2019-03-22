@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const project = db.get(id);
+    const project = await db.get(id);
     if (project) {
       res.status(200).json(project);
     } else {
