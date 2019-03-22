@@ -34,7 +34,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const action = req.body;
-  if (!action.project_id || action.description || action.ntoes) {
+  if (!action.project_id || !action.description || !action.notes) {
     res.status(400).json({
       message: "Please provide a project ID, notes and a description."
     });
@@ -82,12 +82,10 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const action = req.body;
-  if (!action.project_id || action.description || action.notes) {
-    res
-      .status(400)
-      .json({
-        message: "Please provide a project ID, notes and a description."
-      });
+  if (!action.project_id || !action.description || !action.notes) {
+    res.status(400).json({
+      message: "Please provide a project ID, notes and a description."
+    });
   } else {
     try {
       const edited = await db.update(id, action);
