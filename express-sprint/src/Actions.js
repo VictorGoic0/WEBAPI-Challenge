@@ -6,7 +6,7 @@ const Actions = props => {
     <div>
       <h1>Actions</h1>
       {props.actions.map(action => (
-        <Action action={action} />
+        <Action action={action} key={action.id} />
       ))}
     </div>
   );
