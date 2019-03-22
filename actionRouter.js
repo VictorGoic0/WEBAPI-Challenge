@@ -1,12 +1,12 @@
 const express = require("express");
 
 const router = express.Router();
-const db = require("./actionModel.js");
+const db = require("./data/helpers/actionModel.js");
 
 router.get("/", async (req, res) => {
   try {
     const actions = await db.get();
-    actions.status(200).json(actions);
+    res.status(200).json(actions);
   } catch (error) {
     res.status(500).json({ message: "error" });
   }
@@ -46,7 +46,11 @@ router.delete("/:id", async (req, res) => {
     const action = await db.get(id);
     if (action) {
       const deleted = await db.remove(id);
-      res.status(200).json(action);
+      if (deleted) {
+        res.status(200).json(action);
+      } else {
+        res.status(500).json({ message: "could not delete" });
+      }
     } else {
       res.status(404).json({ message: "error" });
     }
